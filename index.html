@@ -10,6 +10,51 @@
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23fffef9'/><text x='50' y='65' text-anchor='middle' font-size='45'>📋</text></svg>">
   <title>懶人待辦</title>
   <style>
+    <style>
+  /* Add this to your :root variables */
+  :root {
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    /* ... rest of variables ... */
+  }
+  
+  /* Fix the body to account for mobile viewport */
+  html, body { 
+    height: 100vh;  /* Use viewport height instead of 100% */
+    width: 100%; 
+    overflow: hidden; 
+    -webkit-tap-highlight-color: transparent; 
+    -webkit-touch-callout: none; 
+    -webkit-user-select: none; 
+    user-select: none; 
+  }
+  
+  /* Ensure todo-list can scroll properly */
+  .todo-list { 
+    list-style: none; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 0.4rem; 
+    flex: 1; 
+    overflow-y: auto; 
+    -webkit-overflow-scrolling: touch;  /* Smooth momentum scrolling on iOS */
+    padding: 0.5rem 0.7rem;
+    padding-bottom: calc(80px + var(--safe-bottom));  /* Extra space for FAB button */
+  }
+  
+  /* Add padding to app-container to prevent content overlap */
+  .app-container { 
+    max-width: 500px; 
+    width: 100%; 
+    background: var(--surface); 
+    box-shadow: var(--shadow); 
+    display: flex; 
+    flex-direction: column; 
+    height: 100vh;  /* Use viewport height */
+    border-radius: 1.5rem 1.5rem 0 0; 
+    padding-top: var(--safe-top);
+    padding-bottom: var(--safe-bottom);
+  }
+</style>
     :root {
       --bg: #f8f5f0; --surface: #fffef9; --text: #3e3a37; --text-secondary: #8e806c;
       --border: #e6dfd3; --accent: #fae24c; --card-bg: #ffffff; --filter-bg: #f2ede4;
