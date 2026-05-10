@@ -19,9 +19,9 @@
       --safe-top: env(safe-area-inset-top, 0px);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100vh; width: 100%; overflow: hidden; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+    html, body { height: 100%; width: 100%; overflow: hidden; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
     body { background: var(--bg); font-family: -apple-system, 'Segoe UI', 'Noto Sans TC', 'Helvetica Neue', sans-serif; display: flex; justify-content: center; align-items: stretch; padding-top: var(--safe-top); }
-    .app-container { max-width: 500px; width: 100%; background: var(--surface); box-shadow: var(--shadow); display: flex; flex-direction: column; height: 100vh; border-radius: 1.5rem 1.5rem 0 0; padding-top: var(--safe-top); padding-bottom: var(--safe-bottom); }
+    .app-container { max-width: 500px; width: 100%; background: var(--surface); box-shadow: var(--shadow); display: flex; flex-direction: column; height: 100%; border-radius: 1.5rem 1.5rem 0 0; padding-top: var(--safe-top); padding-bottom: var(--safe-bottom); }
     @media (min-width: 500px) { .app-container { border-radius: 2rem; margin: 1rem; height: auto; max-height: 95vh; } }
     .header { display: flex; justify-content: space-between; align-items: center; padding: 0.3rem 0.5rem; flex-shrink: 0; }
     h1 { font-weight: 700; font-size: 1.4rem; color: var(--text); }
@@ -194,7 +194,7 @@
     function saveTaskChanges(item){ const id = Number(item.dataset.id); const t = todos.find(x => x.id === id); if(!t) return; const textEl = item.querySelector('.edit-text'); if(textEl) t.description = textEl.value; saveTodos(); }
 
     function showQuickSelect(anchor, options, callback){ let p=document.getElementById('quickPopup'); if(!p){ p=document.createElement('div'); p.id='quickPopup'; p.className='quick-select'; document.body.appendChild(p); } p.innerHTML=''; options.forEach(opt=>{ const btn=document.createElement('button'); btn.textContent=opt; btn.onclick=()=>{ callback(opt); p.style.display='none'; }; p.appendChild(btn); }); const rect=anchor.getBoundingClientRect(); p.style.display='flex'; p.style.top=(rect.bottom+5)+'px'; p.style.left=Math.max(5,rect.left-50)+'px'; setTimeout(()=>{ document.addEventListener('click',function hide(){ p.style.display='none'; document.removeEventListener('click',hide); }); }); }
-    function startPomodoro(id,dur){ pomodoroTaskId=id; pomodoroSeconds=dur*60; pomodoroTimerId=setInterval(()=>{ if(pomodoroSeconds<=0){ stopPomodoro(); alert('🍅 完成！'); renderTodosList(); return; } pomodoroSeconds--; },(1000); }
+    function startPomodoro(id,dur){ pomodoroTaskId=id; pomodoroSeconds=dur*60; pomodoroTimerId=setInterval(()=>{ if(pomodoroSeconds<=0){ stopPomodoro(); alert('🍅 完成！'); renderTodosList(); return; } pomodoroSeconds--; },1000); }
     function stopPomodoro(){ if(pomodoroTimerId){ clearInterval(pomodoroTimerId); pomodoroTimerId=null; pomodoroTaskId=null; pomodoroSeconds=0; } }
     function setupDesktopDrag(){ document.querySelectorAll('.todo-item').forEach(item=>{ item.addEventListener('dragstart',e=>{ e.dataTransfer.setData('text/plain',item.dataset.id); item.classList.add('dragging'); }); item.addEventListener('dragend',()=>{ item.classList.remove('dragging'); }); }); document.getElementById('todoList').addEventListener('drop',e=>{ e.preventDefault(); const id=e.dataTransfer.getData('text/plain'); const idx=todos.findIndex(t=>t.id==id); if(idx>-1){ [todos[idx],todos[idx+1]]=[todos[idx+1],todos[idx]]; saveTodos(); renderAll(); } }); document.getElementById('todoList').addEventListener('dragover',e=>e.preventDefault()); }
     function openCatModal(){ document.getElementById('catModal').classList.add('active'); renderCatList(); } function closeCatModal(){ document.getElementById('catModal').classList.remove('active'); }
